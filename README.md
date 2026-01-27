@@ -101,7 +101,11 @@ npx playwright test --ui
 View report:
 
 ```bash
+# Playwright HTML report
 npx playwright show-report
+
+# Allure report
+npx allure serve allure-results
 ```
 
 ---
