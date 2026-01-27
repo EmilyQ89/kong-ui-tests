@@ -1,0 +1,29 @@
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "module": "CommonJS",
+    "moduleResolution": "Node",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+
+    "baseUrl": ".",
+    "paths": {
+      "@config/*": ["config/*"],
+      "@src/*": ["src/*"],
+      "@base/*": ["src/core/base/*"],
+      "@reporting/*": ["src/core/reporting/*"],
+      "@utils/*": ["src/core/utils/*"],
+      "@fixtures/*": ["src/fixtures/*"],
+      "@flows/*": ["src/flows/*"],
+      "@pages/*": ["src/pages/*"],
+      "@data/*": ["test-data/*"]
+    }
+  },
+  "include": [
+    "src",
+    "tests",
+    "config",
+    "playwright.config.ts"
+, "tests"  ]
+}

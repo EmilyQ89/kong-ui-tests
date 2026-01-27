@@ -1,2 +1,7 @@
-export const getWorkspace = () =>
-  process.env.WORKSPACE ?? 'default';
+export interface WorkspaceConfig {
+  name: string;
+}
+
+export const defaultWorkspace: WorkspaceConfig = {
+  name: 'default',
+};
