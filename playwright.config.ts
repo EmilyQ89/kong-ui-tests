@@ -1,5 +1,5 @@
 import { defineConfig, devices } from '@playwright/test';
-import { env } from './config/env.local';
+import { env } from './config/env';
 /**
  * Read environment variables from file.
  * https://github.com/motdotla/dotenv

@@ -1,5 +1,5 @@
 import { test as base, Page, expect } from '@playwright/test';
-import { env } from '@config/env.local';
+import { env } from '@config/env';
 import { defaultWorkspace } from '@src/config/workspace';
 import { AuthAction } from '@base/auth.action';
 import { NavigationAction } from '@base/navigation.action';

@@ -23,6 +23,8 @@ KONG-UI-TESTS
 ├── config/                     # Root-level environment config
 │   └── env.local.ts
 │
+├── docker-compose.yml          # Local environment setup
+│
 ├── src/
 │   ├── config/                 # Test configuration
 │   ├── core/                   # Core helpers (base page, wrappers)
@@ -63,7 +65,7 @@ npx playwright install
 Configure environment in:
 
 ```
-config/env.local.ts
+config/env.ts
 ```
 
 Example (local development):
@@ -71,8 +73,8 @@ Example (local development):
 ```ts
 export const env = {
   timeout: 30_000,
-  headless: false,
-  baseUrl: 'http://localhost:8002',
+  headless: !process.env.CI,
+  baseUrl: process.env.BASE_URL || 'http://localhost:8002',
 };
 ```
 
