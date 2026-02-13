@@ -4,7 +4,9 @@ export class ServicePage {
   constructor(private page: Page) {}
 
   async clickCreateService() {
-    await this.page.getByTestId('toolbar-add-gateway-service').click();
+    const createBtn = this.page.getByTestId('toolbar-add-gateway-service');
+    await createBtn.waitFor({ state: 'visible', timeout: 60_000 });
+    await createBtn.click();
   }
 
   async fillServiceForm(name: string, url: string, tag?: string) {
