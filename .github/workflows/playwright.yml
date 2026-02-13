@@ -30,12 +30,26 @@ jobs:
       - name: Start Kong via Docker Compose
         run: docker-compose up -d
 
-      - name: Wait for Kong to be ready
-        run: |
-            echo "Waiting for Kong to be ready..."
+      - name: Wait for Kong API to be ready
+        run:
+          echo "Waiting for Kong API to be ready..."
+          for i in {1..40}; do
+            STATUS=$(curl -s http://localhost:8001/status || true)
+            if echo "$STATUS" | grep -q '"database"'; then
+              echo "Kong API is ready"
+              echo "$STATUS"
+              break
+            fi
+            echo "Still waiting for Kong API..."
+            sleep 3
+          done
+      
+      - name: Wait for Kong UI to be ready
+        run:
+            echo "Waiting for Kong UI to be ready..."
             for i in {1..15}; do
               if curl -s http://localhost:8002; then
-                echo "Kong is up!"
+                echo "Kong UI is up!"
                 break
               fi
               sleep 2
