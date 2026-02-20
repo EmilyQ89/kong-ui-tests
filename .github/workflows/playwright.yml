@@ -34,26 +34,54 @@ jobs:
         run: |
           echo "Waiting for Kong API to be ready..."
           for i in {1..40}; do
-            STATUS=$(curl -s http://localhost:8001/status || true)
-            if echo "$STATUS" | grep -q '"database"'; then
-              echo "Kong API is ready"
-              echo "$STATUS"
-              break
+            if curl -s http://localhost:8001/status | grep -q '"database"'; then
+            echo "Kong API is ready"
+            break
             fi
             echo "Still waiting for Kong API..."
             sleep 3
           done
       
-      - name: Wait for Kong UI to be ready
+      - name: Wait for Kong Manager to be fully ready
         run: |
-            echo "Waiting for Kong UI to be ready..."
-            for i in {1..15}; do
-              if curl -s http://localhost:8002; then
-                echo "Kong UI is up!"
-                break
-              fi
-              sleep 2
-            done
+          echo "Waiting for Kong Manager UI to fully load..."
+          npm install -g node-fetch
+    
+          cat > wait-for-kong-ui.js << 'EOF'
+          const fetch = require('node-fetch');
+          const TIMEOUT = 120000;
+          const INTERVAL = 3000;
+    
+          async function checkUI() {
+            try {
+              const response = await fetch('http://localhost:8002');
+              const text = await response.text();
+        
+              console.log('Kong Manager responded');
+              //wait for the JS execution
+              await new Promise(r => setTimeout(r, 15000));
+              return true;
+            } catch (err) {
+              console.log('Connection failed, retrying...')
+              return false;
+            }
+          }
+          async function waitForUI() {
+            const start = Date.now();
+            while (Date.now() - start < TIMEOUT) {
+              if (await checkUI()) {
+                console.log('Kong Manager is fully ready');
+                process.exit(0);
+              }
+              console.log('Still waiting for Kong Manager...');
+              await new Promise(r => setTimeout(r, INTERVAL));
+            }
+            console.error('Kong Manager failed to start within timeout');
+            process.exit(1);
+          }
+          waitForUI();
+          EOF
+          node wait-for-kong-ui.js
 
       # Cache npm dependencies
       - name: Cache npm modules
