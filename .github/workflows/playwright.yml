@@ -45,10 +45,8 @@ jobs:
       - name: Wait for Kong Manager to be fully ready
         run: |
           echo "Waiting for Kong Manager UI to fully load..."
-          npm install -g node-fetch
     
           cat > wait-for-kong-ui.js << 'EOF'
-          const fetch = require('node-fetch');
           const TIMEOUT = 120000;
           const INTERVAL = 3000;
     
