@@ -81,6 +81,13 @@ jobs:
           EOF
           node wait-for-kong-ui.js
 
+      - name: Seed Kong with test data
+        run: |
+          echo "Creating test service via Admin API..."
+          curl -X POST http://localhost:8001/services \
+          -H "Content-Type: application/json" \
+          -d '{"name": "test-service", "url": "http://httpbin.org"}' && echo "Test Service created"
+      
       # Cache npm dependencies
       - name: Cache npm modules
         uses: actions/cache@v3
