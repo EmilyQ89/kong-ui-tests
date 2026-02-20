@@ -17,8 +17,5 @@ export class NavigationAction {
 
   async goToRoutes() {
     await this.page.locator('nav').locator('text=Routes').click();
-    await this.page
-      .getByTestId('toolbar-add-route')
-      .waitFor({ state: 'visible', timeout: NAV_TIMEOUT });
   }
 }

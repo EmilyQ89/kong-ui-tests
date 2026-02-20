@@ -4,9 +4,11 @@ export class RoutePage {
   constructor(private page: Page) {}
 
   async clickCreateRoute() {
-    const createBtn = this.page.getByTestId('toolbar-add-route');
-    await createBtn.waitFor({ state: 'visible', timeout: 60_000 });
-    await createBtn.click();
+    const empty = this.page.getByTestId('empty-state-action');
+    const add = this.page.getByTestId('toolbar-add-route');
+    await empty.or(add).waitFor({ timeout: 60000 });
+    if (await empty.isVisible()) await empty.click();
+    else await add.click();
   }
 
   async fillRouteForm(routeName: string, serviceName: string, path: string) {
